@@ -4,12 +4,16 @@ package com.team.mera.audiogram.screens.addrecord;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.team.mera.audiogram.R;
 import com.team.mera.audiogram.screens.common.BasePermissionFragment;
+import com.team.mera.audiogram.screens.composition.CompositionFragment;
 import com.team.mera.audiogram.utils.NotificationUtils;
 
 import butterknife.ButterKnife;
@@ -27,7 +31,23 @@ public class RecordFragment extends BasePermissionFragment implements RecordView
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_record, container, false);
         mUnbinder = ButterKnife.bind(this, view);
+        setHasOptionsMenu(true);
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.gallery_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_next:
+                mListener.open(CompositionFragment.newInstance(mListener.getDescriptions()), true);
+                break;
+        }
+        return true;
     }
 
     @Override

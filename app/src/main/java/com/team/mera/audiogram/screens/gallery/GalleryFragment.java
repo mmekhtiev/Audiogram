@@ -38,24 +38,7 @@ public class GalleryFragment extends BasePermissionFragment {
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
         mUnbinder = ButterKnife.bind(this, view);
 
-        setHasOptionsMenu(true);
-
         return view;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.gallery_menu, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_next:
-                mListener.open(CompositionFragment.newInstance(mListener.getDescriptions()), true);
-                break;
-        }
-        return true;
     }
 
     @Override
