@@ -1,6 +1,6 @@
 package com.team.mera.audiogram.screens.addrecord;
 
-import com.team.mera.audiogram.MicrophoneWriter;
+import com.team.mera.audiogram.audioprocessing.MicrophoneWriter;
 
 public class RecordPresenterImpl implements RecordPresenter {
 

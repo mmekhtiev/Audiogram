@@ -19,8 +19,8 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.team.mera.audiogram.GalleryPreviewFragment;
 import com.team.mera.audiogram.R;
+import com.team.mera.audiogram.models.TrackDescription;
 import com.team.mera.audiogram.screens.common.BaseFragment;
 
 import java.util.ArrayList;
@@ -28,9 +28,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class PreviewFragment extends BaseFragment {
+
+    @BindView(R.id.audio_gallery_recycler_view)
+    RecyclerView mAudioRecyclerView;
+
+    private ArrayList<TrackDescription> mSamplesList;
+    private AudioAdapter mAudioAdapter;
 
     public PreviewFragment() {
     }
@@ -39,24 +46,14 @@ public class PreviewFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gallery_preview, container, false);
         mUnbinder = ButterKnife.bind(this, view);
-        mAudioRecyclerView = (RecyclerView) view.findViewById(R.id.audio_gallery_recycler_view);
 
         mAudioRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-//        for (int i = 0; i < 20; i++) {
-//            HashMap<String, String> testItem = new HashMap<>();
-//            testItem.put("sampleTitle", "sample title" + i);
-//            testItem.put("samplePath", "sample path");
-//
-//            samplesList.add(testItem);
-//        }
+        mSamplesList = getAudioList();
+        mAudioAdapter = new AudioAdapter(mSamplesList);
+        mAudioRecyclerView.setAdapter(mAudioAdapter);
 
-        samplesList = getAudioList();
-        mAudioRecyclerView.setAdapter(new PreviewFragment.AudioAdapter(samplesList));
         return view;
     }
-
-    private RecyclerView mAudioRecyclerView;
-    public ArrayList<HashMap<String, String>> samplesList = new ArrayList<HashMap<String, String>>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +62,7 @@ public class PreviewFragment extends BaseFragment {
     }
 
     private class AudioHolder extends RecyclerView.ViewHolder {
+
         private ImageView mItemSoundView;
         private CheckBox mItemSoundCheckbox;
         private TextView mItemTestText;
@@ -90,9 +88,9 @@ public class PreviewFragment extends BaseFragment {
     }
 
     private class AudioAdapter extends RecyclerView.Adapter<PreviewFragment.AudioHolder> {
-        private List<HashMap<String, String>> mAudioGalleryItems;
+        private List<TrackDescription> mAudioGalleryItems;
 
-        public AudioAdapter(ArrayList<HashMap<String, String>> galleryItems) {
+        public AudioAdapter(ArrayList<TrackDescription> galleryItems) {
             mAudioGalleryItems = galleryItems;
         }
 
@@ -105,8 +103,8 @@ public class PreviewFragment extends BaseFragment {
 
         @Override
         public void onBindViewHolder(PreviewFragment.AudioHolder holder, int position) {
-            HashMap<String, String> galleryItem = mAudioGalleryItems.get(position);
-            holder.bindName(galleryItem.get("sampleTitle"));
+            TrackDescription galleryItem = mAudioGalleryItems.get(position);
+            holder.bindName(galleryItem.getName());
             holder.setBackground(generateRandomColor());
         }
 
@@ -121,18 +119,19 @@ public class PreviewFragment extends BaseFragment {
         }
     }
 
-    private ArrayList<HashMap<String, String>> getAudioList() {
+    private ArrayList<TrackDescription> getAudioList() {
         final Cursor mCursor = getContext().getContentResolver().query(
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 new String[]{MediaStore.Audio.Media.DISPLAY_NAME, MediaStore.Audio.Media.DATA}, null, null,
                 "LOWER(" + MediaStore.Audio.Media.TITLE + ") ASC");
-        ArrayList<HashMap<String, String>> songsList = new ArrayList<>();
+
+        ArrayList<TrackDescription> songsList = new ArrayList<>();
         int i = 0;
         if (mCursor.moveToFirst()) {
             do {
-                HashMap<String, String> song = new HashMap<>();
-                song.put("sampleTitle", mCursor.getString(mCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME)));
-                song.put("samplePath", mCursor.getString(mCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
+                TrackDescription song = new TrackDescription();
+                song.setName(mCursor.getString(mCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME)));
+                song.setPath(mCursor.getString(mCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
                 songsList.add(song);
                 i++;
             } while (mCursor.moveToNext());

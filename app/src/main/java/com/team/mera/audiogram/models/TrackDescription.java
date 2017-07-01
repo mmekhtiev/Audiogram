@@ -4,12 +4,14 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class TrackDescription implements Parcelable {
+
     private String mPath;
     private float mScaleDuration;
     private float mScaleVolume;
     private float mStartTime;
     private boolean mIsRepeated;
     private int mColor;
+    private String mName;
 
     public TrackDescription() {
 
@@ -61,6 +63,14 @@ public class TrackDescription implements Parcelable {
 
     public void setColor(int color) {
         mColor = color;
+    }
+
+    public String getName() {
+        return mName;
+    }
+
+    public void setName(String name) {
+        mName = name;
     }
 
     @Override
