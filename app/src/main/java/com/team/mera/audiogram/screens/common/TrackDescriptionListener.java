@@ -1,8 +1,10 @@
 package com.team.mera.audiogram.screens.common;
 
+import com.team.mera.audiogram.models.Track;
 import com.team.mera.audiogram.models.TrackDescription;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by u01 on 01.07.2017.
@@ -11,4 +13,5 @@ import java.util.ArrayList;
 public interface TrackDescriptionListener {
     void onUpdate(TrackDescription description, int position);
     ArrayList<TrackDescription> getDescriptions();
+    List<Track> getTracks();
 }

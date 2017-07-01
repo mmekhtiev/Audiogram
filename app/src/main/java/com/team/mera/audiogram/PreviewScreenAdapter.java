@@ -1,20 +1,13 @@
 package com.team.mera.audiogram;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
-import android.graphics.Shader;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RectShape;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -118,11 +111,6 @@ public class PreviewScreenAdapter extends RecyclerView.Adapter<PreviewScreenAdap
 
         public void setBackground(int color) {
             mItemSoundView.setBackgroundColor(color);
-//            int h = 250;
-//            Log.d("PreviewFragment", Integer.toString(mItemSoundView.getHeight()));
-//            ShapeDrawable mDrawable = new ShapeDrawable(new RectShape());
-//            mDrawable.getPaint().setShader(new LinearGradient(0, 0, h, h, color, Color.parseColor("#FFFFFF"), Shader.TileMode.REPEAT));
-//            mItemSoundView.setBackgroundDrawable(mDrawable);
         }
     }
 }

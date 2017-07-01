@@ -84,4 +84,12 @@ public class TrackAdapter extends ArrayAdapter<Track> implements PinchListener, 
     public ArrayList<TrackDescription> getDescriptions() {
         return mTrackDescriptions;
     }
+
+    @Override
+    public List<Track> getTracks() {
+        for (int i = 0; i < mTrackDescriptions.size(); i++) {
+            mTrackList.get(i).setTrackDescription(mTrackDescriptions.get(i));
+        }
+        return mTrackList;
+    }
 }

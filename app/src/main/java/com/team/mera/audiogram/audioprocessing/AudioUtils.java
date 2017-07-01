@@ -98,7 +98,7 @@ public class AudioUtils {
         }
     }
 
-    public static void saveSamplesToWAV(byte[] clipData, long sampleRate, String prefix) {
+    public static boolean saveSamplesToWAV(byte[] clipData, long sampleRate, String prefix) {
         try {
             long subChunk1Size = 16;
             int bitsPerSample = 16;
@@ -136,9 +136,13 @@ public class AudioUtils {
             outFile.flush();
             outFile.close();
 
+            return true;
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return false;
     }
 
     public static File makeDirs(String extension, String prefix, String folder) {
