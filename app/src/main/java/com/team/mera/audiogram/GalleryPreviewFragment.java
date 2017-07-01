@@ -1,4 +1,4 @@
-package com.team.mera.audiogram.screens.preview;
+package com.team.mera.audiogram;
 
 import android.database.Cursor;
 import android.graphics.Color;
@@ -9,6 +9,7 @@ import android.graphics.drawable.shapes.RectShape;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,26 +20,25 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.team.mera.audiogram.GalleryPreviewFragment;
-import com.team.mera.audiogram.R;
-import com.team.mera.audiogram.screens.common.BaseFragment;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import butterknife.ButterKnife;
-
-public class PreviewFragment extends BaseFragment {
-
-    public PreviewFragment() {
-    }
+public class GalleryPreviewFragment extends Fragment {
+    private RecyclerView mAudioRecyclerView;
+    public ArrayList<HashMap<String, String>> samplesList = new ArrayList<HashMap<String, String>>();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gallery_preview, container, false);
-        mUnbinder = ButterKnife.bind(this, view);
         mAudioRecyclerView = (RecyclerView) view.findViewById(R.id.audio_gallery_recycler_view);
 
         mAudioRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
@@ -51,17 +51,8 @@ public class PreviewFragment extends BaseFragment {
 //        }
 
         samplesList = getAudioList();
-        mAudioRecyclerView.setAdapter(new PreviewFragment.AudioAdapter(samplesList));
+        mAudioRecyclerView.setAdapter(new AudioAdapter(samplesList));
         return view;
-    }
-
-    private RecyclerView mAudioRecyclerView;
-    public ArrayList<HashMap<String, String>> samplesList = new ArrayList<HashMap<String, String>>();
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
     }
 
     private class AudioHolder extends RecyclerView.ViewHolder {
@@ -82,14 +73,14 @@ public class PreviewFragment extends BaseFragment {
 
         public void setBackground(int color) {
             int h = 250;
-            Log.d("PreviewFragment", Integer.toString(mItemSoundView.getHeight()));
+            Log.d("GalleryPreviewFragment", Integer.toString(mItemSoundView.getHeight()));
             ShapeDrawable mDrawable = new ShapeDrawable(new RectShape());
             mDrawable.getPaint().setShader(new LinearGradient(0, 0, h, h, color, Color.parseColor("#FFFFFF"), Shader.TileMode.REPEAT));
             mItemSoundView.setBackgroundDrawable(mDrawable);
         }
     }
 
-    private class AudioAdapter extends RecyclerView.Adapter<PreviewFragment.AudioHolder> {
+    private class AudioAdapter extends RecyclerView.Adapter<AudioHolder> {
         private List<HashMap<String, String>> mAudioGalleryItems;
 
         public AudioAdapter(ArrayList<HashMap<String, String>> galleryItems) {
@@ -97,14 +88,14 @@ public class PreviewFragment extends BaseFragment {
         }
 
         @Override
-        public PreviewFragment.AudioHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public AudioHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(getActivity());
             View view = inflater.inflate(R.layout.gallery_item, parent, false);
-            return new PreviewFragment.AudioHolder(view);
+            return new AudioHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(PreviewFragment.AudioHolder holder, int position) {
+        public void onBindViewHolder(AudioHolder holder, int position) {
             HashMap<String, String> galleryItem = mAudioGalleryItems.get(position);
             holder.bindName(galleryItem.get("sampleTitle"));
             holder.setBackground(generateRandomColor());
