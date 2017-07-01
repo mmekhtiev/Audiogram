@@ -51,7 +51,7 @@ public class RecordFragment extends BasePermissionFragment implements RecordView
                 break;
             }
         }
-        return true;
+        return false;
     }
 
     @Override
