@@ -3,35 +3,28 @@ package com.team.mera.audiogram.screens.addrecord;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.team.mera.audiogram.R;
+import com.team.mera.audiogram.screens.common.BasePermissionFragment;
+import com.team.mera.audiogram.utils.NotificationUtils;
 
 import butterknife.ButterKnife;
 import butterknife.OnTouch;
-import butterknife.Unbinder;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class RecordFragment extends Fragment implements RecordView {
-
-    private Unbinder mUnbinder;
+public class RecordFragment extends BasePermissionFragment implements RecordView {
 
     private RecordPresenter mRecordPresenter;
 
     public RecordFragment() {
-        // Required empty public constructor
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_record, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         return view;
@@ -41,12 +34,6 @@ public class RecordFragment extends Fragment implements RecordView {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mRecordPresenter = new RecordPresenterImpl(this);
-    }
-
-    @Override
-    public void onDestroyView() {
-        mUnbinder.unbind();
-        super.onDestroyView();
     }
 
     @OnTouch(R.id.microphone_btn)
@@ -67,4 +54,19 @@ public class RecordFragment extends Fragment implements RecordView {
         return true;
     }
 
+    @Override
+    protected String[] getDesiredPermissions() {
+        return new String[] {"android.permission.RECORD_AUDIO", "android.permission.MODIFY_AUDIO_SETTINGS"};
+    }
+
+    @Override
+    protected void onPermissionDenied() {
+        NotificationUtils.showToast(mContext, "Record permissions not granted");
+        mListener.back();
+    }
+
+    @Override
+    protected void onPermissionGranted() {
+
+    }
 }
