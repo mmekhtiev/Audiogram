@@ -69,8 +69,8 @@ public class TrackLayout extends PinchLayout {
         mDescription.setPath(mPath);
         mDescription.setColor(mColor);
         mDescription.setIsRepeated(false);
-        mDescription.setScaleDuration(mScaleX);
-        mDescription.setScaleVolume(mScaleY);
+        mDescription.setScaleDuration(1 / mScaleX);
+        mDescription.setScaleVolume(mScaleY / 2);
         mDescription.setStartTime(startTime / 1000000f);
 
         return mDescription;

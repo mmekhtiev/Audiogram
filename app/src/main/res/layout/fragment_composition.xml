@@ -5,6 +5,16 @@
     android:layout_height="match_parent"
     tools:context="com.team.mera.audiogram.screens.composition.CompositionFragment">
 
+    <View
+        android:id="@+id/slider"
+        android:layout_width="5dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/composition_filter"
+        android:layout_above="@+id/composition_play"
+        android:layout_marginBottom="20dp"
+        android:background="@color/accent"/>
+
     <ListView
         android:id="@+id/composition_list"
         android:layout_width="match_parent"

@@ -23,12 +23,13 @@ public class SoundsManager {
     private List<TrackDescription> mTrackList = new ArrayList<TrackDescription>();
     private HashMap<Integer, TrackDescription> mTrackDescriptionMap = new HashMap<>();
 
+    private int mLoadTrackCount = 0;
+
     public SoundsManager() {
         mSoundPool = createSoundPool();
     }
 
     public void loadTracks(List<TrackDescription> tracks) {
-        Log.d("MyLog", "loadTracks: " + tracks);
         stop();
         mTrackList.addAll(tracks);
     }
@@ -58,8 +59,6 @@ public class SoundsManager {
         mTrackDescriptionMap.clear();
         mLoadTrackCount = 0;
     }
-
-    private int mLoadTrackCount = 0;
 
     private SoundPool createSoundPool() {
         SoundPool soundPool;
