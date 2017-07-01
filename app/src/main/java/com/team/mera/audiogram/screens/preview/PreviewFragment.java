@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.team.mera.audiogram.utils.FileUtils.getAudioList;
+
 public class PreviewFragment extends BaseFragment {
 
     @BindView(R.id.audio_gallery_recycler_view)
@@ -43,7 +45,7 @@ public class PreviewFragment extends BaseFragment {
         mUnbinder = ButterKnife.bind(this, view);
 
         mAudioRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        mSamplesList = getAudioList();
+        mSamplesList = getAudioList(mContext);
         mPreviewScreenAdapter = new PreviewScreenAdapter(mContext, mSamplesList);
         mAudioRecyclerView.setAdapter(mPreviewScreenAdapter);
         setHasOptionsMenu(true);
@@ -80,28 +82,5 @@ public class PreviewFragment extends BaseFragment {
         } else {
             Toast.makeText(getContext(), "You should select some samples or record new to continue.", Toast.LENGTH_LONG).show();
         }
-    }
-
-    private ArrayList<TrackDescription> getAudioList() {
-        final Cursor mCursor = getContext().getContentResolver().query(
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                new String[]{MediaStore.Audio.Media.DISPLAY_NAME, MediaStore.Audio.Media.DATA}, null, null,
-                "LOWER(" + MediaStore.Audio.Media.TITLE + ") ASC");
-
-        ArrayList<TrackDescription> songsList = new ArrayList<>();
-
-        songsList.addAll(HomeFragment.getAudioList());
-
-        if (mCursor.moveToFirst()) {
-            do {
-                TrackDescription song = new TrackDescription();
-                song.setName(mCursor.getString(mCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME)));
-                song.setPath(mCursor.getString(mCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
-                songsList.add(song);
-            } while (mCursor.moveToNext());
-        }
-        mCursor.close();
-
-        return songsList;
     }
 }
