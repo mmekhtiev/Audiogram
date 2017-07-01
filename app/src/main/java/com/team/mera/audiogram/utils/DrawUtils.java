@@ -11,6 +11,8 @@ import android.view.animation.Transformation;
 
 import com.team.mera.audiogram.R;
 
+import java.util.Random;
+
 public class DrawUtils {
     public static final int ANIMATION_DURATION = 300;
 
@@ -20,6 +22,12 @@ public class DrawUtils {
 
     public static int getAlphaColor(int alpha, int color) {
         return Color.argb(alpha, Color.red(color), Color.green(color), Color.blue(color));
+    }
+
+    public static int getGreyColor() {
+        Random rand = new Random();
+        int greyColor = rand.nextInt(85) + 171;
+        return Color.argb(128, greyColor, greyColor, greyColor);
     }
 
     public static Paint getPaint(Context context, boolean isDashed, int color) {

@@ -4,8 +4,10 @@ import android.animation.Animator;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,19 +16,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewPropertyAnimator;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.team.mera.audiogram.R;
+import com.team.mera.audiogram.models.Filter;
 import com.team.mera.audiogram.models.Track;
 import com.team.mera.audiogram.models.TrackDescription;
 import com.team.mera.audiogram.screens.common.BasePermissionFragment;
 import com.team.mera.audiogram.screens.common.TrackListener;
+import com.team.mera.audiogram.utils.DrawUtils;
+import com.team.mera.audiogram.utils.NotificationUtils;
 import com.team.mera.audiogram.utils.SoundsManager;
 import com.team.mera.audiogram.widgets.TrackAdapter;
 import com.team.mera.audiogram.widgets.pinchview.PinchListViewListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,6 +52,9 @@ public class CompositionFragment extends BasePermissionFragment implements Track
     @BindView(R.id.composition_progress)
     View mProgress;
 
+    @BindView(R.id.composition_filter)
+    RecyclerView mFilterRecycleView;
+
     private CompositionPresenter mCompositionPresenter;
     @BindView(R.id.composition_play)
     FloatingActionButton mPlayButton;
@@ -56,6 +67,8 @@ public class CompositionFragment extends BasePermissionFragment implements Track
     private ArrayList<TrackDescription> mDescriptions;
     private TrackAdapter mAdapter;
     private SoundsManager mSoundsManager;
+
+    private ArrayList<TrackTask> mTaskList = new ArrayList<>();
 
     public CompositionFragment() {
     }
@@ -86,12 +99,38 @@ public class CompositionFragment extends BasePermissionFragment implements Track
 
         mAdapter = new TrackAdapter(mContext, new ArrayList<Track>());
 
+        //TODO: add real filters
+        ArrayList<Filter> list = new ArrayList<>();
+
+        Filter filter1 = new Filter();
+        filter1.setTitle("ECHO");
+
+        Filter filter2 = new Filter();
+        filter2.setTitle("REPEAT");
+
+        Filter filter3 = new Filter();
+        filter3.setTitle("MIRROW");
+
+        list.add(filter1);
+        list.add(filter2);
+        list.add(filter3);
+
+        mFilterRecycleView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        mFilterRecycleView.setAdapter(new FilterAdapter(list));
+
+        mAdapter = new TrackAdapter(mContext, new ArrayList<Track>());
+
         mCompositionList.setAdapter(mAdapter);
         mCompositionList.setOnTouchListener(new PinchListViewListener(mCompositionList));
 
         if (mDescriptions != null) {
             for (TrackDescription description : mDescriptions) {
-                new TrackTask(this).execute(description);
+                TrackTask task = new TrackTask(this);
+                task.execute(description);
+
+                synchronized (this) {
+                    mTaskList.add(task);
+                }
             }
 
             mProgress.setVisibility(View.VISIBLE);
@@ -102,6 +141,16 @@ public class CompositionFragment extends BasePermissionFragment implements Track
         mCompositionPresenter = new ComposerPresenterImpl(this);
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        synchronized (this) {
+            for (TrackTask task : mTaskList) {
+                task.cancel(true);
+            }
+        }
     }
 
     @Override
@@ -203,6 +252,62 @@ public class CompositionFragment extends BasePermissionFragment implements Track
     public void onError() {
         Snackbar.make(mProgress, "Error", Snackbar.LENGTH_SHORT).show();
         mListener.openHome();
+    }
+
+    public static class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.Holder> implements View.OnClickListener {
+        private List<Filter> mFilterList;
+
+        public FilterAdapter(ArrayList<Filter> filterItems) {
+            mFilterList = filterItems;
+        }
+
+        @Override
+        public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View view = inflater.inflate(R.layout.gallery_item, parent, false);
+            view.setOnClickListener(this);
+            return new Holder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(Holder holder, int position) {
+            Filter filter = mFilterList.get(position);
+            holder.setFilter(filter);
+        }
+
+        @Override
+        public int getItemCount() {
+            return mFilterList.size();
+        }
+
+        @Override
+        public void onClick(View v) {
+            NotificationUtils.showToast(v.getContext(), "This awesome feature is not implemented");
+        }
+
+        public static class Holder extends RecyclerView.ViewHolder {
+            @BindView(R.id.imageView1)
+            ImageView mImage;
+
+            @BindView(R.id.test_text)
+            TextView mTitle;
+
+            @BindView(R.id.checkBox1)
+            View mCheck;
+
+            public Holder(View itemView) {
+                super(itemView);
+                ButterKnife.bind(this, itemView);
+            }
+
+            public void setFilter(Filter filter) {
+                mImage.setImageResource(filter.getImage());
+                mTitle.setText(filter.getTitle());
+                mTitle.setCompoundDrawablesWithIntrinsicBounds(0, filter.getImage(), 0, 0);
+                mImage.setBackgroundColor(DrawUtils.getGreyColor());
+                mCheck.setVisibility(View.GONE);
+            }
+        }
     }
 
     private static class TrackTask extends AsyncTask<TrackDescription, Void, Track> {

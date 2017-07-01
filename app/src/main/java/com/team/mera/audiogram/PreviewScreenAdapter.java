@@ -1,7 +1,6 @@
 package com.team.mera.audiogram;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import com.team.mera.audiogram.models.TrackDescription;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class PreviewScreenAdapter extends RecyclerView.Adapter<PreviewScreenAdapter.AudioHolder> {
     private List<TrackDescription> mAudioGalleryItems;
@@ -40,7 +38,7 @@ public class PreviewScreenAdapter extends RecyclerView.Adapter<PreviewScreenAdap
     public void onBindViewHolder(AudioHolder holder, int position) {
         TrackDescription galleryItem = mAudioGalleryItems.get(position);
         holder.bindName(galleryItem.getName());
-        holder.setBackground(generateRandomColor());
+        holder.setBackground(galleryItem.getColor());
         holder.mItemSoundCheckbox.setTag(position);
         holder.mItemSoundCheckbox.setChecked(mSelectedItems.get(position));
     }
@@ -48,12 +46,6 @@ public class PreviewScreenAdapter extends RecyclerView.Adapter<PreviewScreenAdap
     @Override
     public int getItemCount() {
         return mAudioGalleryItems.size();
-    }
-
-    private int generateRandomColor() {
-        Random rand = new Random();
-        int greyColor = rand.nextInt(85) + 171;
-        return Color.argb(128, greyColor, greyColor, greyColor);
     }
 
     public ArrayList<TrackDescription> getCheckedItems() {

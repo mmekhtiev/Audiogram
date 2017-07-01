@@ -19,6 +19,7 @@ import com.team.mera.audiogram.models.TrackDescription;
 import com.team.mera.audiogram.screens.common.BaseFragment;
 import com.team.mera.audiogram.screens.composition.CompositionFragment;
 import com.team.mera.audiogram.screens.home.HomeFragment;
+import com.team.mera.audiogram.utils.DrawUtils;
 
 import java.util.ArrayList;
 
@@ -97,6 +98,7 @@ public class PreviewFragment extends BaseFragment {
                 TrackDescription song = new TrackDescription();
                 song.setName(mCursor.getString(mCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME)));
                 song.setPath(mCursor.getString(mCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
+                song.setColor(DrawUtils.getGreyColor());
                 songsList.add(song);
             } while (mCursor.moveToNext());
         }
