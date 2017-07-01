@@ -146,6 +146,7 @@ public class CompositionFragment extends BasePermissionFragment implements Track
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        stopPlaying();
         synchronized (this) {
             for (TrackTask task : mTaskList) {
                 task.cancel(true);
@@ -234,12 +235,16 @@ public class CompositionFragment extends BasePermissionFragment implements Track
                 }
             });
         } else {
-            mSoundsManager.stop();
-            mPlayButton.setImageResource(R.drawable.ic_play_arrow);
-            mIsPlaying = false;
-            if(mAnimator != null) {
-                mAnimator.cancel();
-            }
+            stopPlaying();
+        }
+    }
+
+    private void stopPlaying() {
+        mSoundsManager.stop();
+        mPlayButton.setImageResource(R.drawable.ic_play_arrow);
+        mIsPlaying = false;
+        if(mAnimator != null) {
+            mAnimator.cancel();
         }
     }
 
