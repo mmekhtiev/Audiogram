@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.provider.MediaStore;
+
 import com.team.mera.audiogram.models.TrackDescription;
 import com.team.mera.audiogram.screens.home.HomeFragment;
 
@@ -14,8 +15,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Random;
-
-import static java.security.AccessController.getContext;
 
 public class FileUtils {
 

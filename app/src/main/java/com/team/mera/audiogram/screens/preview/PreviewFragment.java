@@ -19,6 +19,7 @@ import com.team.mera.audiogram.models.TrackDescription;
 import com.team.mera.audiogram.screens.common.BaseFragment;
 import com.team.mera.audiogram.screens.composition.CompositionFragment;
 import com.team.mera.audiogram.screens.home.HomeFragment;
+import com.team.mera.audiogram.utils.DrawUtils;
 
 import java.util.ArrayList;
 

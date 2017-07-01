@@ -10,8 +10,7 @@
         android:layout_width="5dp"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/composition_filter"
-        android:layout_above="@+id/composition_play"
+        android:layout_above="@+id/composition_filter"
         android:layout_marginBottom="20dp"
         android:background="@color/accent"/>
 
@@ -19,7 +18,7 @@
         android:id="@+id/composition_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/composition_filter"
+        android:layout_above="@+id/composition_filter"
         android:listSelector="@android:color/transparent"/>
 
     <android.support.design.widget.FloatingActionButton
@@ -28,21 +27,15 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_play_arrow"
         android:layout_marginRight="24dp"
-        android:layout_marginBottom="24dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"/>
-    
-    <FrameLayout
+        android:layout_marginBottom="-29dp"
+        android:layout_above="@+id/composition_filter"
+        android:layout_alignParentRight="true"/>
+
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/composition_filter"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/filter_min_height">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/composition_filter_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-    </FrameLayout>
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"/>
 
     <LinearLayout
         android:id="@+id/composition_progress"
@@ -50,6 +43,7 @@
         android:layout_height="match_parent"
         android:clickable="true"
         android:gravity="center"
+        android:background="@color/transparent_black"
         android:visibility="gone">
 
         <ProgressBar

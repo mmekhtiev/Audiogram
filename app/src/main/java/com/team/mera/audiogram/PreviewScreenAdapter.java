@@ -1,7 +1,6 @@
 package com.team.mera.audiogram;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import com.team.mera.audiogram.models.TrackDescription;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class PreviewScreenAdapter extends RecyclerView.Adapter<PreviewScreenAdapter.AudioHolder> {
     private List<TrackDescription> mAudioGalleryItems;
@@ -49,8 +47,6 @@ public class PreviewScreenAdapter extends RecyclerView.Adapter<PreviewScreenAdap
     public int getItemCount() {
         return mAudioGalleryItems.size();
     }
-
-
 
     public ArrayList<TrackDescription> getCheckedItems() {
         ArrayList<TrackDescription> mTempArray = new ArrayList<>();
