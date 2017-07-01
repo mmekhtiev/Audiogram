@@ -101,6 +101,20 @@ public class HomeFragment extends BaseFragment implements HomeView, HomeScreenAd
             }
         }
 
+        dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC) + "/Audiogram" + "/results/";
+
+        directory = new File(dir);
+        files = directory.listFiles();
+
+        if (files != null) {
+            for (File file : files) {
+                TrackDescription song = new TrackDescription();
+                song.setName(file.getName());
+                song.setPath(file.getPath());
+                songsList.add(song);
+            }
+        }
+
         return songsList;
     }
 

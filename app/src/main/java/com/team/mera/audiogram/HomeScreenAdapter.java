@@ -1,9 +1,6 @@
 package com.team.mera.audiogram;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,7 +53,7 @@ public class HomeScreenAdapter extends RecyclerView.Adapter<HomeScreenAdapter.Vi
             }
         });
 
-        holder.mPlayImage.setImageResource(track.isPlaying() ? R.drawable.ic_stop_black_24dp : R.drawable.ic_play_circle_outline_black_24dp);
+        holder.mPlayImage.setImageResource(track.isPlaying() ? R.drawable.ic_stop_black : R.drawable.ic_play_circle_outline_black);
 
         holder.mPlayImage.setOnClickListener(new View.OnClickListener() {
             @Override

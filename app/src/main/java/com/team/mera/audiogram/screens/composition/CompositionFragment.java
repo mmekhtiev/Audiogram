@@ -2,6 +2,7 @@ package com.team.mera.audiogram.screens.composition;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,7 +27,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class CompositionFragment extends BasePermissionFragment implements TrackListener {
+public class CompositionFragment extends BasePermissionFragment implements TrackListener, CompositionView {
     private static final String ARG_DESCRIPTIONS = "descriptions";
 
     @BindView(R.id.composition_list)
@@ -35,6 +36,7 @@ public class CompositionFragment extends BasePermissionFragment implements Track
     @BindView(R.id.composition_progress)
     View mProgress;
 
+    private CompositionPresenter mCompositionPresenter;
     private ArrayList<TrackDescription> mDescriptions;
     private TrackAdapter mAdapter;
 
@@ -79,6 +81,8 @@ public class CompositionFragment extends BasePermissionFragment implements Track
 
         setHasOptionsMenu(true);
 
+        mCompositionPresenter = new ComposerPresenterImpl(this);
+
         return view;
     }
 
@@ -91,7 +95,7 @@ public class CompositionFragment extends BasePermissionFragment implements Track
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_record:
-                mListener.openHome();
+                mCompositionPresenter.compose(mAdapter.getTracks());
                 break;
         }
         return true;
@@ -129,6 +133,17 @@ public class CompositionFragment extends BasePermissionFragment implements Track
     public void onPlay() {
         //TODO: play
         mAdapter.getDescriptions();
+    }
+
+    @Override
+    public void onSuccess() {
+        mListener.openHome();
+    }
+
+    @Override
+    public void onError() {
+        Snackbar.make(mProgress, "Error", Snackbar.LENGTH_SHORT).show();
+        mListener.openHome();
     }
 
     private static class TrackTask extends AsyncTask<TrackDescription, Void, Track> {

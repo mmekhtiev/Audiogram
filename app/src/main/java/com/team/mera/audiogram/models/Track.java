@@ -24,6 +24,8 @@ public class Track {
     private int mColor;
     private String mPath;
     private int mDuration;
+    private byte[] mBytes;
+    private TrackDescription mTrackDescription;
 
     // A Track object should only be created using the static methods create()
     private Track() {
@@ -229,6 +231,27 @@ public class Track {
             mHeights[i] = gain / 65025f;
         }
 
+        decodedBuffer.position(0);
+
+        //short[] samples = decodedBytes.array();
+
+        mBytes = decodedBytes.array();
+        //for (int i = 0; i < samples.length; i++) {
+        //    mBytes[i] = (byte) samples[i];
+        //}
+
         decodedBuffer.clear();
+    }
+
+    public byte[] getBytes() {
+        return mBytes;
+    }
+
+    public TrackDescription getTrackDescription() {
+        return mTrackDescription;
+    }
+
+    public void setTrackDescription(TrackDescription trackDescription) {
+        mTrackDescription = trackDescription;
     }
 }

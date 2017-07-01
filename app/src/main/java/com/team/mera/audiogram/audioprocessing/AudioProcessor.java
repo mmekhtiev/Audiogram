@@ -1,9 +1,11 @@
 package com.team.mera.audiogram.audioprocessing;
 
+import com.team.mera.audiogram.models.Track;
 import com.team.mera.audiogram.models.TrackDescription;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by Denis on 01.07.2017.
@@ -11,57 +13,55 @@ import java.io.IOException;
 
 public class AudioProcessor {
 
-    public static void joinAudio(String url1, String url2, int sampleRate) {
-        File file1 = new File(url1);
-        File file2 = new File(url2);
+    public static boolean transcodeTracks(List<Track> tracks) {
 
-        try {
-            byte[] data1 = AudioUtils.getBytesFromFile(file1);
-            byte[] data2 = AudioUtils.getBytesFromFile(file2);
+        byte[] resData = new byte[1];
 
-            byte[] resData = new byte[data1.length + data2.length];
-
-            System.arraycopy(data1, 0, resData, 0, data1.length);
-            System.arraycopy(data2, 0, resData, data1.length, data2.length);
-
-            AudioUtils.saveSamplesToWAV(resData, sampleRate, "joined_");
-        } catch (IOException e) {
-            e.printStackTrace();
+        for (int i = 1; i < tracks.size(); i++) {
+            resData = overlayAudio(tracks.get(i - 1), tracks.get(i), 48000, tracks.get(i).getTrackDescription().getStartTime());
         }
+
+        return AudioUtils.saveSamplesToWAV(resData, 48000, "overlaid_");
     }
 
-    public static void overlayAudio(TrackDescription track1, TrackDescription track2, int sampleRate, float startTimeInSec) {
-        File file1 = new File(track1.getPath());
-        File file2 = new File(track2.getPath());
+    private static byte[] joinAudio(Track track1, Track track2, int sampleRate) {
+        byte[] data1 = track1.getBytes();
+        byte[] data2 = track2.getBytes();
 
-        try {
-            byte[] data1 = AudioUtils.getBytesFromFile(file1);
-            byte[] data2 = AudioUtils.getBytesFromFile(file2);
+        byte[] resData = new byte[data1.length + data2.length];
 
-            data1 = LinearInterpolation.interpolate(sampleRate, (int) (track1.getScaleDuration() * sampleRate), data1);
-            data2 = LinearInterpolation.interpolate(sampleRate, (int) (track2.getScaleDuration() * sampleRate), data2);
+        System.arraycopy(data1, 0, resData, 0, data1.length);
+        System.arraycopy(data2, 0, resData, data1.length, data2.length);
 
-            int bitsPerSample = 16;
-            int channels = 1;
-            int byteRate = sampleRate * channels * bitsPerSample / 8;
+        return resData;
+    }
 
-            int startIndex = (int) (startTimeInSec * byteRate);
+    private static byte[] overlayAudio(Track track1, Track track2, int sampleRate, float startTimeInSec) {
 
-            int resultLength = startIndex + data2.length;
-            resultLength = resultLength < data1.length ? data1.length : resultLength;
+        byte[] data1 = track1.getBytes();
+        byte[] data2 = track2.getBytes();
 
-            byte[] resData = new byte[resultLength];
+        //data1 = LinearInterpolation.interpolate(sampleRate, (int) (track1.getScaleDuration() * sampleRate), data1);
+        //data2 = LinearInterpolation.interpolate(sampleRate, (int) (track2.getScaleDuration() * sampleRate), data2);
 
-            System.arraycopy(data1, 0, resData, 0, data1.length);
+        int bitsPerSample = 16;
+        int channels = 1;
+        int byteRate = sampleRate * channels * bitsPerSample / 8;
 
-            for (int i = startIndex; i < data2.length; i++) {
-                resData[i] = (byte) (resData[i] + data2[i - startIndex]);
-            }
+        int startIndex = (int) (startTimeInSec * byteRate);
 
-            AudioUtils.saveSamplesToWAV(resData, sampleRate, "overlaid_");
-        } catch (IOException e) {
-            e.printStackTrace();
+        int resultLength = startIndex + data2.length;
+        resultLength = resultLength < data1.length ? data1.length : resultLength;
+
+        byte[] resData = new byte[resultLength];
+
+        System.arraycopy(data1, 0, resData, 0, data1.length);
+
+        for (int i = startIndex; i < data2.length; i++) {
+            resData[i] = (byte) (resData[i] + data2[i - startIndex]);
         }
+
+        return resData;
     }
 
 }
