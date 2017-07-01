@@ -3,6 +3,7 @@ package com.team.mera.audiogram.screens.home;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,7 @@ import com.team.mera.audiogram.models.TrackDescription;
 import com.team.mera.audiogram.screens.common.BaseFragment;
 import com.team.mera.audiogram.screens.gallery.GalleryFragment;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -71,24 +73,22 @@ public class HomeFragment extends BaseFragment {
         return true;
     }
 
-    private ArrayList<TrackDescription> getAudioList() {
-        final Cursor mCursor = getContext().getContentResolver().query(
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                new String[]{MediaStore.Audio.Media.DISPLAY_NAME, MediaStore.Audio.Media.DATA}, null, null,
-                "LOWER(" + MediaStore.Audio.Media.TITLE + ") ASC");
+    public static ArrayList<TrackDescription> getAudioList() {
+        String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC)  + "/Audiogram" + "/samples/";
+
+        File directory = new File(dir);
+        File[] files = directory.listFiles();
 
         ArrayList<TrackDescription> songsList = new ArrayList<>();
-        int i = 0;
-        if (mCursor.moveToFirst()) {
-            do {
-                TrackDescription song = new TrackDescription();
-                song.setName(mCursor.getString(mCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME)));
-                song.setPath(mCursor.getString(mCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
-                songsList.add(song);
-                i++;
-            } while (mCursor.moveToNext());
+
+        for (File file:
+                files) {
+            TrackDescription song = new TrackDescription();
+            song.setName(file.getName());
+            song.setPath(file.getPath());
+            songsList.add(song);
         }
-        mCursor.close();
+
         return songsList;
     }
 }
