@@ -52,7 +52,7 @@ public class GalleryFragment extends BasePermissionFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_next:
-                mListener.open(new CompositionFragment(), true);
+                mListener.open(CompositionFragment.newInstance(mListener.getDescriptions()), true);
                 break;
         }
         return true;

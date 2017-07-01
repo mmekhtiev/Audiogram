@@ -1,6 +1,7 @@
 package com.team.mera.audiogram.screens.main;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -12,8 +13,12 @@ import com.team.mera.audiogram.screens.common.BaseFragment;
 import com.team.mera.audiogram.screens.common.BasePermissionActivity;
 import com.team.mera.audiogram.screens.common.FragmentListener;
 import com.team.mera.audiogram.screens.home.HomeFragment;
+import com.team.mera.audiogram.utils.DrawUtils;
+import com.team.mera.audiogram.utils.FileUtils;
 import com.team.mera.audiogram.utils.NotificationUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -25,7 +30,6 @@ public class MainActivity extends BasePermissionActivity implements FragmentList
     @BindView(R.id.main_toolbar)
     Toolbar mToolbar;
 
-    private BaseFragment mFragment;
     private Unbinder mUnbinder;
 
     @Override
@@ -82,6 +86,12 @@ public class MainActivity extends BasePermissionActivity implements FragmentList
     }
 
     @Override
+    public void openHome() {
+        getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        open(new HomeFragment(), false);
+    }
+
+    @Override
     public void back() {
         onBackPressed();
     }
@@ -93,6 +103,20 @@ public class MainActivity extends BasePermissionActivity implements FragmentList
 
     @Override
     public ArrayList<TrackDescription> getDescriptions() {
-        return null;
+        //TODO get real list
+        ArrayList<TrackDescription> list = new ArrayList<>();
+        try {
+            for (int i = 0; i < 5; i++) {
+                File file = FileUtils.getFile(this, getAssets().open("sample_1.mp3"));
+                TrackDescription description = new TrackDescription();
+                description.setColor(DrawUtils.getColor());
+                description.setPath(file.getPath());
+
+                list.add(description);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }

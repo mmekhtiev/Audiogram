@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 public interface FragmentListener {
     void open(BaseFragment fragment, boolean useBackStack);
+    void openHome();
+
     void back();
 
     void setDescriptions(ArrayList<TrackDescription> descriptions);
