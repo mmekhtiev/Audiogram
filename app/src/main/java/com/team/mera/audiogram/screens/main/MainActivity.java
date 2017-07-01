@@ -31,6 +31,8 @@ public class MainActivity extends BasePermissionActivity implements FragmentList
     Toolbar mToolbar;
 
     private Unbinder mUnbinder;
+    private ArrayList<TrackDescription> selectedToComposit;
+
 
     @Override
     protected String[] getDesiredPermissions() {
@@ -100,7 +102,7 @@ public class MainActivity extends BasePermissionActivity implements FragmentList
 
     @Override
     public void setDescriptions(ArrayList<TrackDescription> descriptions) {
-
+        selectedToComposit = descriptions;
     }
 
     @Override
@@ -120,5 +122,6 @@ public class MainActivity extends BasePermissionActivity implements FragmentList
             e.printStackTrace();
         }
         return list;
+        //return selectedToComposit;
     }
 }

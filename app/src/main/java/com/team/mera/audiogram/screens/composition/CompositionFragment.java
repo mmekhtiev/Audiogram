@@ -1,8 +1,12 @@
 package com.team.mera.audiogram.screens.composition;
 
+import android.animation.Animator;
+import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.FloatingActionButton;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +20,7 @@ import com.team.mera.audiogram.models.Track;
 import com.team.mera.audiogram.models.TrackDescription;
 import com.team.mera.audiogram.screens.common.BasePermissionFragment;
 import com.team.mera.audiogram.screens.common.TrackListener;
+import com.team.mera.audiogram.utils.SoundsManager;
 import com.team.mera.audiogram.widgets.TrackAdapter;
 import com.team.mera.audiogram.widgets.pinchview.PinchListViewListener;
 
@@ -37,8 +42,17 @@ public class CompositionFragment extends BasePermissionFragment implements Track
     View mProgress;
 
     private CompositionPresenter mCompositionPresenter;
+    @BindView(R.id.composition_play)
+    FloatingActionButton mPlayButton;
+
+    @BindView(R.id.slider)
+    View mPlayProgressSlider;
+
+    private boolean mIsPlaying;
+
     private ArrayList<TrackDescription> mDescriptions;
     private TrackAdapter mAdapter;
+    private SoundsManager mSoundsManager;
 
     public CompositionFragment() {
     }
@@ -59,6 +73,7 @@ public class CompositionFragment extends BasePermissionFragment implements Track
         if (getArguments() != null) {
             mDescriptions = getArguments().getParcelableArrayList(ARG_DESCRIPTIONS);
         }
+        mSoundsManager = new SoundsManager();
     }
 
     @Override
@@ -103,7 +118,7 @@ public class CompositionFragment extends BasePermissionFragment implements Track
 
     @Override
     protected String[] getDesiredPermissions() {
-        return new String[] {"android.permission.WRITE_EXTERNAL_STORAGE"};
+        return new String[]{"android.permission.WRITE_EXTERNAL_STORAGE"};
     }
 
     @Override
@@ -131,8 +146,43 @@ public class CompositionFragment extends BasePermissionFragment implements Track
 
     @OnClick(R.id.composition_play)
     public void onPlay() {
-        //TODO: play
-        mAdapter.getDescriptions();
+        if(!mIsPlaying) {
+            mSoundsManager.loadTracks(mAdapter.getDescriptions());
+            mSoundsManager.playAll();
+            mPlayButton.setImageResource(R.drawable.ic_stop_24dp);
+            mIsPlaying = true;
+
+            Display display = getActivity().getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            int width = size.x;
+            int height = size.y;
+
+            mPlayProgressSlider.animate().x(width).setDuration(43000).setListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mPlayButton.setImageResource(R.drawable.ic_play_arrow);
+                    mPlayProgressSlider.setX(0);
+                    mIsPlaying = false;
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+                }
+            });
+        } else {
+            mSoundsManager.stop();
+            mPlayButton.setImageResource(R.drawable.ic_play_arrow);
+            mIsPlaying = false;
+    }
     }
 
     @Override
