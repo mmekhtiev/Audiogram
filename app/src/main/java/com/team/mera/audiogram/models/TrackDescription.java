@@ -9,6 +9,7 @@ public class TrackDescription implements Parcelable {
     private float mScaleVolume;
     private float mStartTime;
     private boolean mIsRepeated;
+    private int mColor;
 
     public TrackDescription() {
 
@@ -46,12 +47,20 @@ public class TrackDescription implements Parcelable {
         mStartTime = startTime;
     }
 
-    public boolean isIsRepeated() {
+    public boolean getIsRepeated() {
         return mIsRepeated;
     }
 
     public void setIsRepeated(boolean isRepeated) {
         mIsRepeated = isRepeated;
+    }
+
+    public int getColor() {
+        return mColor;
+    }
+
+    public void setColor(int color) {
+        mColor = color;
     }
 
     @Override
@@ -66,6 +75,7 @@ public class TrackDescription implements Parcelable {
         dest.writeFloat(this.mScaleVolume);
         dest.writeFloat(this.mStartTime);
         dest.writeByte(this.mIsRepeated ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.mColor);
     }
 
     protected TrackDescription(Parcel in) {
@@ -74,9 +84,10 @@ public class TrackDescription implements Parcelable {
         this.mScaleVolume = in.readFloat();
         this.mStartTime = in.readFloat();
         this.mIsRepeated = in.readByte() != 0;
+        this.mColor = in.readInt();
     }
 
-    public static final Parcelable.Creator<TrackDescription> CREATOR = new Parcelable.Creator<TrackDescription>() {
+    public static final Creator<TrackDescription> CREATOR = new Creator<TrackDescription>() {
         @Override
         public TrackDescription createFromParcel(Parcel source) {
             return new TrackDescription(source);

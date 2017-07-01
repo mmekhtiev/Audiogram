@@ -7,11 +7,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.team.mera.audiogram.R;
+import com.team.mera.audiogram.models.TrackDescription;
 import com.team.mera.audiogram.screens.common.BaseFragment;
 import com.team.mera.audiogram.screens.common.BasePermissionActivity;
 import com.team.mera.audiogram.screens.common.FragmentListener;
 import com.team.mera.audiogram.screens.home.HomeFragment;
 import com.team.mera.audiogram.utils.NotificationUtils;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -81,5 +84,15 @@ public class MainActivity extends BasePermissionActivity implements FragmentList
     @Override
     public void back() {
         onBackPressed();
+    }
+
+    @Override
+    public void setDescriptions(ArrayList<TrackDescription> descriptions) {
+
+    }
+
+    @Override
+    public ArrayList<TrackDescription> getDescriptions() {
+        return null;
     }
 }
