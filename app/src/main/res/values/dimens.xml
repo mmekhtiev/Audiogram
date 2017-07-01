@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="paint_line_width">1dp</dimen>
+    <dimen name="paint_dash_width">10dp</dimen>
+    <dimen name="wave_min_height">50dp</dimen>
+    <dimen name="wave_max_height">200dp</dimen>
+
+    <dimen name="filter_min_height">50dp</dimen>
+    <dimen name="filter_max_height">200dp</dimen>
+</resources>
