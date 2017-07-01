@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.team.mera.audiogram.models.TrackDescription;
-import com.team.mera.audiogram.utils.DrawUtils;
 
 import java.util.ArrayList;
 import java.util.List;

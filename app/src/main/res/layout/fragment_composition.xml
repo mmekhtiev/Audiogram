@@ -10,8 +10,7 @@
         android:layout_width="5dp"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/composition_filter"
-        android:layout_above="@+id/composition_play"
+        android:layout_above="@+id/composition_filter"
         android:layout_marginBottom="20dp"
         android:background="@color/accent"/>
 
@@ -44,6 +43,7 @@
         android:layout_height="match_parent"
         android:clickable="true"
         android:gravity="center"
+        android:background="@color/transparent_black"
         android:visibility="gone">
 
         <ProgressBar
