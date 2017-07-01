@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewPropertyAnimator;
 import android.widget.ListView;
 
 import com.team.mera.audiogram.R;
@@ -33,6 +34,8 @@ import butterknife.OnClick;
 
 public class CompositionFragment extends BasePermissionFragment implements TrackListener {
     private static final String ARG_DESCRIPTIONS = "descriptions";
+
+    private static final int MAX_AUDIO_DURATION = 45000;
 
     @BindView(R.id.composition_list)
     ListView mCompositionList;
@@ -140,9 +143,10 @@ public class CompositionFragment extends BasePermissionFragment implements Track
         }
     }
 
+    private ViewPropertyAnimator mAnimator;
     @OnClick(R.id.composition_play)
     public void onPlay() {
-        if(!mIsPlaying) {
+        if (!mIsPlaying) {
             mSoundsManager.loadTracks(mAdapter.getDescriptions());
             mSoundsManager.playAll();
             mPlayButton.setImageResource(R.drawable.ic_stop_24dp);
@@ -154,7 +158,7 @@ public class CompositionFragment extends BasePermissionFragment implements Track
             int width = size.x;
             int height = size.y;
 
-            mPlayProgressSlider.animate().x(width).setDuration(43000).setListener(new Animator.AnimatorListener() {
+            mAnimator = mPlayProgressSlider.animate().x(width).setDuration(MAX_AUDIO_DURATION).setListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animation) {
                 }
@@ -178,7 +182,10 @@ public class CompositionFragment extends BasePermissionFragment implements Track
             mSoundsManager.stop();
             mPlayButton.setImageResource(R.drawable.ic_play_arrow);
             mIsPlaying = false;
-    }
+            if(mAnimator != null) {
+                mAnimator.cancel();
+            }
+        }
     }
 
     private static class TrackTask extends AsyncTask<TrackDescription, Void, Track> {
