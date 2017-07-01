@@ -110,8 +110,8 @@ public class MicrophoneWriter {
 
     private AudioRecord findAudioRecord() {
         for (int rate : mSampleRates) {
-            for (short audioFormat : new short[]{AudioFormat.ENCODING_PCM_8BIT, AudioFormat.ENCODING_PCM_16BIT}) {
-                for (short channelConfig : new short[]{AudioFormat.CHANNEL_IN_MONO, AudioFormat.CHANNEL_IN_STEREO}) {
+            for (short audioFormat : new short[]{AudioFormat.ENCODING_PCM_16BIT}) {
+                for (short channelConfig : new short[]{AudioFormat.CHANNEL_IN_MONO}) {
                     try {
                         Log.d(TAG, "Attempting rate " + rate + "Hz, bits: " + audioFormat + ", channel: "
                                 + channelConfig);

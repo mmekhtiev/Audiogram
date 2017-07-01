@@ -15,13 +15,17 @@ public class AudioProcessor {
 
     public static boolean transcodeTracks(List<Track> tracks) {
 
-        byte[] resData = new byte[1];
+        Track result = new Track();
+        result.setTrackDescription(tracks.get(0).getTrackDescription());
+        result.setBytes(tracks.get(0).getBytes());
 
         for (int i = 1; i < tracks.size(); i++) {
-            resData = overlayAudio(tracks.get(i - 1), tracks.get(i), 48000, tracks.get(i).getTrackDescription().getStartTime());
+            byte[] resData = overlayAudio(result, tracks.get(i), 48000, tracks.get(i).getTrackDescription().getStartTime());
+            result.setTrackDescription(tracks.get(i).getTrackDescription());
+            result.setBytes(resData);
         }
 
-        return AudioUtils.saveSamplesToWAV(resData, 48000, "overlaid_");
+        return AudioUtils.saveSamplesToWAV(result.getBytes(), 48000, "overlaid_");
     }
 
     private static byte[] joinAudio(Track track1, Track track2, int sampleRate) {

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.team.mera.audiogram.models.TrackDescription;
+import com.team.mera.audiogram.utils.DrawUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +53,7 @@ public class PreviewScreenAdapter extends RecyclerView.Adapter<PreviewScreenAdap
         ArrayList<TrackDescription> mTempArray = new ArrayList<>();
         for(int i=0;i < mAudioGalleryItems.size();i++) {
             if(mSelectedItems.get(i)) {
+                mAudioGalleryItems.get(i).setColor(DrawUtils.getDarkGreyColor());
                 mTempArray.add(mAudioGalleryItems.get(i));
             }
         }

@@ -28,7 +28,7 @@ public class Track {
     private TrackDescription mTrackDescription;
 
     // A Track object should only be created using the static methods create()
-    private Track() {
+    public Track() {
     }
 
     // Create and return a Track object using the file path
@@ -245,6 +245,10 @@ public class Track {
 
     public byte[] getBytes() {
         return mBytes;
+    }
+
+    public void setBytes(byte[] bytes) {
+        mBytes = bytes;
     }
 
     public TrackDescription getTrackDescription() {
