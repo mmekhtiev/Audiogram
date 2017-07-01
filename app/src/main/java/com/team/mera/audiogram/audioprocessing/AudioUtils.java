@@ -68,7 +68,7 @@ public class AudioUtils {
             long chunk2Size =  dataSize * channels * bitsPerSample / 8;
             long chunkSize = 36 + chunk2Size;
 
-            File file = makeDirs("wav", "");
+            File file = makeDirs("wav", "", "samples");
 
             OutputStream os;
             os = new FileOutputStream(file);
@@ -111,7 +111,7 @@ public class AudioUtils {
             long chunk2Size =  dataSize * channels * bitsPerSample / 8;
             long chunkSize = 36 + chunk2Size;
 
-            File file = makeDirs("wav", prefix);
+            File file = makeDirs("wav", prefix, "results");
 
             OutputStream os;
             os = new FileOutputStream(file);
@@ -141,8 +141,8 @@ public class AudioUtils {
         }
     }
 
-    public static File makeDirs(String extension, String prefix) {
-        String externalStorage = Environment.getExternalStorageDirectory().getPath() + "/Audiogram";
+    public static File makeDirs(String extension, String prefix, String folder) {
+        String externalStorage = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC) + "/Audiogram/" + folder;
         File externalStorageFile = new File(externalStorage);
 
         if (!externalStorageFile.exists()) {

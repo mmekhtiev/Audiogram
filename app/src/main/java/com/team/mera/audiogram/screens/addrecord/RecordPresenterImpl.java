@@ -22,4 +22,8 @@ public class RecordPresenterImpl implements RecordPresenter {
     public void stopRecord() {
         mMicrophoneWriter.stop();
     }
+
+    @Override
+    public void release() {
+    }
 }

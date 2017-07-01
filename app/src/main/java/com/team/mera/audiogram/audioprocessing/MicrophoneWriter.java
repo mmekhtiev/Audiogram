@@ -46,12 +46,16 @@ public class MicrophoneWriter {
     }
 
     public void stop() {
-        mRecordingThread.interrupt();
-        mAudioRecorder.stop();
+        if (mRecordingThread != null) {
+            mRecordingThread.interrupt();
+        }
+        if (mAudioRecorder != null) {
+            mAudioRecorder.stop();
+        }
     }
 
     private void writeAudioDataToFile() {
-        File file = makeDirs("pcm", "");
+        File file = makeDirs("pcm", "", "tmp");
 
         short sData[] = new short[mBuffSize / 2];
 
