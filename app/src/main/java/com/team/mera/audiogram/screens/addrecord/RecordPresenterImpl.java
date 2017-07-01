@@ -2,7 +2,7 @@ package com.team.mera.audiogram.screens.addrecord;
 
 import com.team.mera.audiogram.audioprocessing.MicrophoneWriter;
 
-public class RecordPresenterImpl implements RecordPresenter {
+public class RecordPresenterImpl implements RecordPresenter, MicrophoneWriter.WriteListener {
 
     private RecordView mView;
 
@@ -10,7 +10,7 @@ public class RecordPresenterImpl implements RecordPresenter {
 
     public RecordPresenterImpl(RecordView view) {
         mView = view;
-        mMicrophoneWriter = new MicrophoneWriter();
+        mMicrophoneWriter = new MicrophoneWriter(this);
     }
 
     @Override
@@ -25,5 +25,14 @@ public class RecordPresenterImpl implements RecordPresenter {
 
     @Override
     public void release() {
+        mView = null;
+        mMicrophoneWriter.release();
+    }
+
+    @Override
+    public void onWavWrited(String path) {
+        if (mView != null) {
+            mView.onFileWrited(path);
+        }
     }
 }
