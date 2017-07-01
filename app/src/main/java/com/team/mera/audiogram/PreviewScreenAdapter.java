@@ -18,13 +18,19 @@ import java.util.List;
 public class PreviewScreenAdapter extends RecyclerView.Adapter<PreviewScreenAdapter.AudioHolder> {
     private List<TrackDescription> mAudioGalleryItems;
     SparseBooleanArray mSelectedItems;
+    private PreviewItemsListener mListener;
     Context context;
 
+    public interface PreviewItemsListener {
+        void onPlayClicked(TrackDescription track);
+        void onStopClicked();
+    }
 
-    public PreviewScreenAdapter(Context context, ArrayList<TrackDescription> galleryItems) {
+    public PreviewScreenAdapter(Context context, ArrayList<TrackDescription> galleryItems, PreviewItemsListener listener) {
         this.context = context;
         mAudioGalleryItems = galleryItems;
         mSelectedItems = new SparseBooleanArray();
+        mListener = listener;
     }
 
     @Override
@@ -36,11 +42,22 @@ public class PreviewScreenAdapter extends RecyclerView.Adapter<PreviewScreenAdap
 
     @Override
     public void onBindViewHolder(AudioHolder holder, int position) {
-        TrackDescription galleryItem = mAudioGalleryItems.get(position);
+        final TrackDescription galleryItem = mAudioGalleryItems.get(position);
         holder.bindName(galleryItem.getName());
         holder.setColorCode(galleryItem.getColor());
         holder.mItemSoundCheckbox.setTag(position);
         holder.mItemSoundCheckbox.setChecked(mSelectedItems.get(position));
+
+        holder.mItemSoundView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!galleryItem.isPlaying()) {
+                    mListener.onPlayClicked(galleryItem);
+                } else {
+                    mListener.onStopClicked();
+                }
+            }
+        });
     }
 
     @Override
