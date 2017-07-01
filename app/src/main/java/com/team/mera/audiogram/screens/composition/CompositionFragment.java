@@ -139,7 +139,9 @@ public class CompositionFragment extends BasePermissionFragment implements Track
     @Override
     public void onSuccess(Track track) {
         if (track != null) {
-            mProgress.setVisibility(View.GONE);
+            if (mProgress != null) {
+                mProgress.setVisibility(View.GONE);
+            }
             mAdapter.add(track);
         }
     }

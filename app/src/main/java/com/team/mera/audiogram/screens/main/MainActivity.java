@@ -107,21 +107,6 @@ public class MainActivity extends BasePermissionActivity implements FragmentList
 
     @Override
     public ArrayList<TrackDescription> getDescriptions() {
-        //TODO get real list
-        ArrayList<TrackDescription> list = new ArrayList<>();
-        try {
-            for (int i = 0; i < 5; i++) {
-                File file = FileUtils.getFile(this, getAssets().open("sample_1.mp3"));
-                TrackDescription description = new TrackDescription();
-                description.setColor(DrawUtils.getColor());
-                description.setPath(file.getPath());
-
-                list.add(description);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return list;
-        //return selectedToComposit;
+        return selectedToComposit;
     }
 }
