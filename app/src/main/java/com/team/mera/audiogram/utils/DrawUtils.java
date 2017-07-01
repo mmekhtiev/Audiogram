@@ -30,10 +30,9 @@ public class DrawUtils {
         return Color.argb(128, greyColor, greyColor, greyColor);
     }
 
-    public static int getDarkGreyColor() {
+    public static int getMiddleColor() {
         Random rand = new Random();
-        int greyColor = rand.nextInt(128);
-        return Color.rgb(greyColor, greyColor, greyColor);
+        return Color.argb(100, rand.nextInt(150) + 50, rand.nextInt(150) + 50, rand.nextInt(150) + 50);
     }
 
     public static Paint getPaint(Context context, boolean isDashed, int color) {

@@ -39,7 +39,7 @@ public class PreviewScreenAdapter extends RecyclerView.Adapter<PreviewScreenAdap
     public void onBindViewHolder(AudioHolder holder, int position) {
         TrackDescription galleryItem = mAudioGalleryItems.get(position);
         holder.bindName(galleryItem.getName());
-        holder.setBackground(galleryItem.getColor());
+        holder.setColorCode(galleryItem.getColor());
         holder.mItemSoundCheckbox.setTag(position);
         holder.mItemSoundCheckbox.setChecked(mSelectedItems.get(position));
     }
@@ -53,7 +53,6 @@ public class PreviewScreenAdapter extends RecyclerView.Adapter<PreviewScreenAdap
         ArrayList<TrackDescription> mTempArray = new ArrayList<>();
         for(int i=0;i < mAudioGalleryItems.size();i++) {
             if(mSelectedItems.get(i)) {
-                mAudioGalleryItems.get(i).setColor(DrawUtils.getDarkGreyColor());
                 mTempArray.add(mAudioGalleryItems.get(i));
             }
         }
@@ -84,12 +83,14 @@ public class PreviewScreenAdapter extends RecyclerView.Adapter<PreviewScreenAdap
     public class AudioHolder extends RecyclerView.ViewHolder {
         ImageView mItemSoundView;
         CheckBox mItemSoundCheckbox;
+        ImageView mItemColorCode;
         TextView mItemTestText;
 
         public AudioHolder(View itemView) {
             super(itemView);
             mItemSoundView = (ImageView) itemView.findViewById(R.id.imageView1);
             mItemTestText = (TextView) itemView.findViewById(R.id.test_text);
+            mItemColorCode = (ImageView) itemView.findViewById(R.id.color_code);
             mItemSoundCheckbox = (CheckBox) itemView.findViewById(R.id.checkBox1);
             mItemSoundCheckbox.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -103,8 +104,8 @@ public class PreviewScreenAdapter extends RecyclerView.Adapter<PreviewScreenAdap
             mItemTestText.setText(text);
         }
 
-        public void setBackground(int color) {
-            mItemSoundView.setBackgroundColor(color);
+        public void setColorCode(int color) {
+            mItemColorCode.setBackgroundColor(color);
         }
     }
 }

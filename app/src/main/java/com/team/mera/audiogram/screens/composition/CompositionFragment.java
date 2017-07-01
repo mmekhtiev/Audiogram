@@ -8,7 +8,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -305,7 +304,7 @@ public class CompositionFragment extends BasePermissionFragment implements Track
                 mImage.setImageResource(filter.getImage());
                 mTitle.setText(filter.getTitle());
                 mTitle.setCompoundDrawablesWithIntrinsicBounds(0, filter.getImage(), 0, 0);
-                mImage.setBackgroundColor(DrawUtils.getGreyColor());
+                mImage.setBackgroundColor(DrawUtils.getMiddleColor());
                 mCheck.setVisibility(View.GONE);
             }
         }
