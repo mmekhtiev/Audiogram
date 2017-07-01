@@ -74,19 +74,20 @@ public class HomeFragment extends BaseFragment {
     }
 
     public static ArrayList<TrackDescription> getAudioList() {
-        String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC)  + "/Audiogram" + "/samples/";
+        String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC) + "/Audiogram" + "/samples/";
 
         File directory = new File(dir);
         File[] files = directory.listFiles();
 
         ArrayList<TrackDescription> songsList = new ArrayList<>();
 
-        for (File file:
-                files) {
-            TrackDescription song = new TrackDescription();
-            song.setName(file.getName());
-            song.setPath(file.getPath());
-            songsList.add(song);
+        if (files != null) {
+            for (File file : files) {
+                TrackDescription song = new TrackDescription();
+                song.setName(file.getName());
+                song.setPath(file.getPath());
+                songsList.add(song);
+            }
         }
 
         return songsList;

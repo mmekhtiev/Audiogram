@@ -49,8 +49,8 @@ public class TrackDescription implements Parcelable {
         mStartTime = startTime;
     }
 
-    public boolean getIsRepeated() {
-        return mIsRepeated;
+    public int getIsRepeated() {
+        return mIsRepeated ? -1 : 0;
     }
 
     public void setIsRepeated(boolean isRepeated) {
@@ -108,4 +108,17 @@ public class TrackDescription implements Parcelable {
             return new TrackDescription[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "TrackDescription{" +
+                "mPath='" + mPath + '\'' +
+                ", mScaleDuration=" + mScaleDuration +
+                ", mScaleVolume=" + mScaleVolume +
+                ", mStartTime=" + mStartTime +
+                ", mIsRepeated=" + mIsRepeated +
+                ", mColor=" + mColor +
+                ", mName='" + mName + '\'' +
+                '}';
+    }
 }
