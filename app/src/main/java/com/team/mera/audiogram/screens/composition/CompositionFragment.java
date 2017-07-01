@@ -2,7 +2,6 @@ package com.team.mera.audiogram.screens.composition;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -120,9 +119,8 @@ public class CompositionFragment extends BasePermissionFragment implements Track
 
     @Override
     public void onSuccess(Track track) {
-        mProgress.setVisibility(View.GONE);
-
         if (track != null) {
+            mProgress.setVisibility(View.GONE);
             mAdapter.add(track);
         }
     }
