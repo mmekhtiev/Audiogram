@@ -22,7 +22,7 @@ import butterknife.Unbinder;
 
 public class MainActivity extends BasePermissionActivity implements FragmentListener {
 
-    @BindView(R.id.main_toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
     private BaseFragment mFragment;
@@ -57,7 +57,9 @@ public class MainActivity extends BasePermissionActivity implements FragmentList
             actionBar.setDisplayShowTitleEnabled(true);
         }
 
-        open(new HomeFragment(), false);
+        if (savedInstanceState == null) {
+            open(new HomeFragment(), false);
+        }
     }
 
     @Override
