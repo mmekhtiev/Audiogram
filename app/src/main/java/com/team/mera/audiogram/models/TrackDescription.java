@@ -12,6 +12,7 @@ public class TrackDescription implements Parcelable {
     private boolean mIsRepeated;
     private int mColor;
     private String mName;
+    private boolean isPlaying;
 
     public TrackDescription() {
 
@@ -71,6 +72,14 @@ public class TrackDescription implements Parcelable {
 
     public void setName(String name) {
         mName = name;
+    }
+
+    public boolean isPlaying() {
+        return isPlaying;
+    }
+
+    public void setPlaying(boolean playing) {
+        isPlaying = playing;
     }
 
     @Override
