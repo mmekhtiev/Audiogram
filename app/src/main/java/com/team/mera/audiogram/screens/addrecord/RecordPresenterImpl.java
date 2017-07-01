@@ -1,0 +1,27 @@
+package com.team.mera.audiogram.screens.addrecord;
+
+/**
+ * Created by Denis on 30.06.2017.
+ */
+
+public class RecordPresenterImpl implements RecordPresenter {
+
+    private RecordView mView;
+
+    private MicrophoneWriter mMicrophoneWriter;
+
+    public RecordPresenterImpl(RecordView view) {
+        mView = view;
+        mMicrophoneWriter = new MicrophoneWriter();
+    }
+
+    @Override
+    public void startRecord() {
+        mMicrophoneWriter.start();
+    }
+
+    @Override
+    public void stopRecord() {
+        mMicrophoneWriter.stop();
+    }
+}
