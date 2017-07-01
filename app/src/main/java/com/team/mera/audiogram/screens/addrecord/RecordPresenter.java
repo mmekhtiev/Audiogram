@@ -7,4 +7,5 @@ package com.team.mera.audiogram.screens.addrecord;
 public interface RecordPresenter {
     void startRecord();
     void stopRecord();
+    void release();
 }

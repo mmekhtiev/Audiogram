@@ -36,6 +36,17 @@ public class RecordFragment extends BasePermissionFragment implements RecordView
         mRecordPresenter = new RecordPresenterImpl(this);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        mRecordPresenter.stopRecord();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
     @OnTouch(R.id.microphone_btn)
     boolean onTouch(View v, MotionEvent event) {
         switch (event.getAction()) {
@@ -51,7 +62,7 @@ public class RecordFragment extends BasePermissionFragment implements RecordView
                 break;
             }
         }
-        return true;
+        return false;
     }
 
     @Override
