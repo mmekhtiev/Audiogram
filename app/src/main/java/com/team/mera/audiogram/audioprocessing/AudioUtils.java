@@ -53,7 +53,7 @@ public class AudioUtils {
         return bytes;
     }
 
-    public static void saveFileToWAV(File fileToConvert, long sampleRate) {
+    public static String saveFileToWAV(File fileToConvert, long sampleRate) {
         try {
             long subChunk1Size = 16;
             int bitsPerSample = 16;
@@ -93,9 +93,13 @@ public class AudioUtils {
             outFile.flush();
             outFile.close();
 
+            return file.getPath();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return "";
     }
 
     public static boolean saveSamplesToWAV(byte[] clipData, long sampleRate, String prefix) {

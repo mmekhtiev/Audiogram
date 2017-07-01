@@ -28,10 +28,17 @@ public class MicrophoneWriter {
     private Thread mRecordingThread = null;
     private int mSampleRate;
 
-    public MicrophoneWriter() {
+    private WriteListener mListener;
+
+    public interface WriteListener {
+        void onWavWrited(String path);
+    }
+
+    public MicrophoneWriter(WriteListener listener) {
         mBuffSize = AudioRecord.getMinBufferSize(getValidSampleRates(), AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
         mAudioRecorder = findAudioRecord();
         mSampleRate = getValidSampleRates();
+        mListener = listener;
     }
 
     public void start() {
@@ -52,6 +59,10 @@ public class MicrophoneWriter {
         if (mAudioRecorder != null) {
             mAudioRecorder.stop();
         }
+    }
+
+    public void release() {
+        mListener = null;
     }
 
     private void writeAudioDataToFile() {
@@ -80,7 +91,11 @@ public class MicrophoneWriter {
 
             os.close();
 
-            saveFileToWAV(file, mSampleRate);
+            String path = saveFileToWAV(file, mSampleRate);
+
+            if (mListener != null) {
+                mListener.onWavWrited(path);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -5,4 +5,5 @@ package com.team.mera.audiogram.screens.addrecord;
  */
 
 public interface RecordView {
+    void onFileWrited(String path);
 }

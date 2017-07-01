@@ -1,20 +1,21 @@
 package com.team.mera.audiogram.screens.addrecord;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.team.mera.audiogram.R;
+import com.team.mera.audiogram.models.TrackDescription;
 import com.team.mera.audiogram.screens.common.BasePermissionFragment;
 import com.team.mera.audiogram.screens.composition.CompositionFragment;
 import com.team.mera.audiogram.utils.NotificationUtils;
+
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.OnTouch;
@@ -33,21 +34,6 @@ public class RecordFragment extends BasePermissionFragment implements RecordView
         mUnbinder = ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
         return view;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.gallery_menu, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_next:
-                mListener.open(CompositionFragment.newInstance(mListener.getDescriptions()), true);
-                break;
-        }
-        return true;
     }
 
     @Override
@@ -99,5 +85,17 @@ public class RecordFragment extends BasePermissionFragment implements RecordView
     @Override
     protected void onPermissionGranted() {
 
+    }
+
+    @Override
+    public void onFileWrited(String path) {
+        ArrayList<TrackDescription> list = new ArrayList<>();
+        TrackDescription trackDescription = new TrackDescription();
+        trackDescription.setPath(path);
+        trackDescription.setName(path);
+        trackDescription.setColor(Color.GRAY);
+        list.add(trackDescription);
+        mListener.setDescriptions(list);
+        mListener.open(CompositionFragment.newInstance(mListener.getDescriptions()), true);
     }
 }
