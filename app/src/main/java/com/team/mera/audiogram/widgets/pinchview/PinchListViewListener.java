@@ -85,7 +85,7 @@ public class PinchListViewListener implements View.OnTouchListener {
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                if (mPinchView == null) {
+                if (mPinchView == null || !mIsActive) {
                     //do nothing
                 } else if (mPointerCount == 1) {
                     mPinchView.onScroll(mFirstX, event.getX(0) - mFirstX);

@@ -11,6 +11,8 @@ import android.widget.ListView;
 import com.team.mera.audiogram.models.Track;
 import com.team.mera.audiogram.models.TrackDescription;
 import com.team.mera.audiogram.screens.common.TrackDescriptionListener;
+import com.team.mera.audiogram.utils.NotificationUtils;
+import com.team.mera.audiogram.widgets.pinchview.PinchLayout;
 import com.team.mera.audiogram.widgets.pinchview.PinchListener;
 
 import java.util.ArrayList;
@@ -35,6 +37,26 @@ public class TrackAdapter extends ArrayAdapter<Track> implements PinchListener, 
         mTrackList.add(track);
         addDescription(track);
         notifyDataSetChanged();
+    }
+
+    public void zoomIn() {
+        if (PinchLayout.mParentScaleX < 3) {
+            PinchLayout.mParentScaleX++;
+
+            notifyDataSetChanged();
+        } else {
+            NotificationUtils.showToast(getContext(), "Max zoom");
+        }
+    }
+
+    public void zoomOut() {
+        if (PinchLayout.mParentScaleX > 1) {
+            PinchLayout.mParentScaleX--;
+
+            notifyDataSetChanged();
+        } else {
+            NotificationUtils.showToast(getContext(), "Min zoom");
+        }
     }
 
     private void addDescription(Track track) {

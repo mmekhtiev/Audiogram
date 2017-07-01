@@ -16,7 +16,7 @@ public abstract class PinchLayout extends FrameLayout implements PinchView {
     protected float mPositionX = 0;
 
     // Zoom level
-    protected float mParentScaleX = 3;
+    public static float mParentScaleX = 3;
 
     private Path mPath = new Path();
     private Paint mPaint = new Paint();

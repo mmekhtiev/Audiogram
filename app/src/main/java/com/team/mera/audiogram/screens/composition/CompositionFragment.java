@@ -165,6 +165,12 @@ public class CompositionFragment extends BasePermissionFragment implements Track
             case R.id.action_record:
                 mCompositionPresenter.compose(mAdapter.getTracks());
                 break;
+            case R.id.action_zoom_in:
+                mAdapter.zoomIn();
+                break;
+            case R.id.action_zoom_out:
+                mAdapter.zoomOut();
+                break;
         }
         return true;
     }
