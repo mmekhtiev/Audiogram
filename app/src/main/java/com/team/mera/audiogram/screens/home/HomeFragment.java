@@ -3,6 +3,7 @@ package com.team.mera.audiogram.screens.home;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -26,6 +27,7 @@ import com.team.mera.audiogram.screens.gallery.GalleryFragment;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -97,6 +99,7 @@ public class HomeFragment extends BaseFragment implements HomeView, HomeScreenAd
                 TrackDescription song = new TrackDescription();
                 song.setName(file.getName());
                 song.setPath(file.getPath());
+                song.setColor(generateRandomColor());
                 songsList.add(song);
             }
         }
@@ -111,11 +114,17 @@ public class HomeFragment extends BaseFragment implements HomeView, HomeScreenAd
                 TrackDescription song = new TrackDescription();
                 song.setName(file.getName());
                 song.setPath(file.getPath());
+                song.setColor(generateRandomColor());
                 songsList.add(song);
             }
         }
 
         return songsList;
+    }
+
+    private static int generateRandomColor() {
+        Random rand = new Random();
+        return Color.argb(255, rand.nextInt(150) + 50, rand.nextInt(150) + 50, rand.nextInt(150) + 50);
     }
 
     @Override
